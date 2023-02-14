@@ -23,6 +23,8 @@ def extract_stock_data(ticker):
     cf_data = get_cashflow_data(ticker)
     IC = interest_coverage_and_RF(ticker)
     print(IC)
+    print(cf_data)
+    print(metric_data)
 
 
 

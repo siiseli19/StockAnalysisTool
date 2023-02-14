@@ -15,18 +15,15 @@ import os
 # from financialmodelingprep API
 #Kd = Rf + Credit Spread
 #Risk free rate we will use the interest rate offered by a 1 year US T-bill >> scrape if needed
-
-
-
 def interest_coverage_and_RF(ticker):
     stock_ticker = ticker
     key = os.environ.get('API_KEY')
 
-    IS = requests.get(f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
-    EBIT = IS[0]['ebitda'] - IS[0]['depreciationAndAmortization']
+    IS = requests.get(f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json() #income statement
+    EBIT = IS[0]['ebitda'] - IS[0]['depreciationAndAmortization'] #index 0 for the most recent year
     interest_expense = IS[0]['interestExpense']
     interest_coverage_ratio = EBIT / interest_expense
-    return print(interest_coverage_ratio)
+    return interest_coverage_ratio
 
 def calculate_cost_of_debt(ticker):
 

@@ -38,6 +38,7 @@ def get_cashflow_data(ticker):
         data.string
         cf_array.append(data)
 
+    #what if trillions?
     str_arr = []
     for i in cf_array:
         str = i.string
@@ -88,8 +89,18 @@ def get_metrics(ticker):
     # change data types to floats for calculations !
     # strip letters from strings
     market_cap = tbody_table[0].string
-    market_cap = market_cap.strip('B')
-    market_cap = float(market_cap)
+
+    # if market cap contains 'T' change to billions => *1000
+    for i in market_cap:
+        if i == 'T':
+            market_cap = market_cap.strip('T')
+            market_cap = float(market_cap)
+            market_cap = market_cap * 1000 #to billions
+            
+        if i == 'B':
+            market_cap = market_cap.strip('B')
+            market_cap = float(market_cap)
+
 
     earnings_per_share = tbody_table[2].string
     pe_ratio = tbody_table[3].string
@@ -110,3 +121,8 @@ def get_metrics(ticker):
 #tax rate
 def get_tax_rate_and_capital_structure():
     pass
+
+
+def check_billions_or_trillions():
+    pass
+
