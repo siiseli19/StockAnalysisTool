@@ -38,10 +38,11 @@ def get_cashflow_data(ticker):
         data.string
         cf_array.append(data)
 
-    #what if trillions?
+    #create solution for cashflows in millions and negatives!!
     str_arr = []
     for i in cf_array:
         str = i.string
+        str = str.strip('()')
         str = str.strip('B')
         str_arr.append(str)
 
