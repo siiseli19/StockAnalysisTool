@@ -7,6 +7,7 @@ from io import StringIO
 import pandas as pd
 import sys
 import numpy as np #for pv and fv functions
+from helper_functions import check_millions_cf, check_negative_cf
 
 
 
@@ -31,26 +32,38 @@ def get_cashflow_data(ticker):
     cf_table = cf_row[-3]
     # result set
     cf_data = cf_table.select('span')
-
     cf_array = []
 
     for data in cf_data:
         data.string
         cf_array.append(data)
-
     #create solution for cashflows in millions and negatives!!
     str_arr = []
-    for i in cf_array:
-        str = i.string
-        str = str.strip('()')
-        str = str.strip('B')
-        str_arr.append(str)
-
+    neg_cf = ''
     # past cashflows in billions
     past_cashflows = []
-    for cf in str_arr:
-        cf = float(cf)
-        past_cashflows.append(cf)
+    for i in cf_array:
+        str = i.string
+
+        if check_negative_cf(str) == True:
+            print('Negative Cashflow Detected')
+            sys.exit()
+
+        if check_millions_cf(str) == True:
+            str = str.strip('M')
+            str_arr.append(str)
+            for cf in str_arr:
+                cf = float(cf)
+                cf = cf/1000
+                past_cashflows.append(cf)
+
+
+        else: str = str.strip('B')
+        str_arr.append(str)
+        for cf in str_arr:
+            cf = float(cf)
+            past_cashflows.append(cf)
+
 
     year1 = past_cashflows[1]
     year2 = past_cashflows[2]
@@ -65,7 +78,7 @@ def get_cashflow_data(ticker):
     CF_array.append(year4)
     CF_array.append(year5)
 
-    return  CF_array
+    return  CF_array, neg_cf
 
 
 def get_metrics(ticker):

@@ -46,5 +46,5 @@ def extract_stock_data(ticker):
     #simple scrape for testing
     #Scrpe income statement for revenue and EPS performance analysis ??
     #scrape needed data for Graham number/financial sector valuation.
-stock = 'MSFT'
+stock = 'COST'
 extract_stock_data(stock)
