@@ -10,3 +10,9 @@ def check_millions_cf(str):
         if i == 'M':
             return True
         else: return False
+
+
+
+
+def check_billions_or_trillions():
+    pass

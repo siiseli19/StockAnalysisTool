@@ -131,12 +131,4 @@ def get_metrics(ticker):
 
 
 
-#deb/equity ratio
-#tax rate
-def get_tax_rate_and_capital_structure():
-    pass
-
-
-def check_billions_or_trillions():
-    pass
 

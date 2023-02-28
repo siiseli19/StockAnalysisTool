@@ -88,17 +88,42 @@ def calculate_cost_of_debt(RF, interest_coverage_ratio):
     cost_of_debt = RF + credit_spread
     return cost_of_debt
 
+#call api for beta & est. market return
+def calculate_cost_of_equity(ticker):
+    stock_ticker = ticker
+    key = os.environ.get('API_KEY')
 
-
-
-def calculate_cost_of_equity():
+    # Interest coverage
+    IS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
     pass
 
 
 # return wacc
-def calculate_WACC():
+#get tax rate & capital structure
+def calculate_WACC(ticker):
+    stock_ticker = ticker
+    key = os.environ.get('API_KEY')
+
+    # Interest coverage
+    IS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
     pass
 
+
+
+
+#deb/equity ratio
+#tax rate
+def get_tax_rate_and_capital_structure(ticker):
+    stock_ticker = ticker
+    key = os.environ.get('API_KEY')
+    # Interest coverage
+    IS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
+    pass
+
+    pass
 
 # A DCF valuation for mature dividend paying companies with 10% error marginal
 # Consider country codes for different perpetual growthrates
