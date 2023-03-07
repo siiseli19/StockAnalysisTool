@@ -1,15 +1,10 @@
 import datareader as datareader
 import requests
-import re
-import csv
-import json
-from bs4 import BeautifulSoup
-from io import StringIO
-import pandas as pd
 import pandas_datareader.data as web
-import sys
 import os
 import datetime
+from fredapi import Fred
+
 
 
 # from financialmodelingprep API
