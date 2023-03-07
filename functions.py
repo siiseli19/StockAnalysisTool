@@ -39,7 +39,7 @@ def get_cashflow_data(ticker):
         cf_array.append(data)
     #create solution for cashflows in millions and negatives!!
     str_arr = []
-    neg_cf = ''
+
     # past cashflows in billions
     past_cashflows = []
     for i in cf_array:
@@ -78,7 +78,7 @@ def get_cashflow_data(ticker):
     CF_array.append(year4)
     CF_array.append(year5)
 
-    return  CF_array, neg_cf
+    return  CF_array
 
 
 def get_metrics(ticker):

@@ -27,7 +27,7 @@ def interest_coverage_and_RF(ticker):
     interest_coverage_ratio = EBIT / interest_expense
 
     # RF
-    start = datetime.datetime(2019, 7, 10)
+    start = datetime.datetime(2022, 1, 1)
 
     end = datetime.datetime.today().strftime('%Y-%m-%d')
     # end = datetime.datetime(2020, 7, 10)
@@ -93,11 +93,11 @@ def calculate_cost_of_equity(ticker):
     key = os.environ.get('API_KEY')
     stock_ticker = ticker
     # RF
-    start = datetime.datetime(2019, 7, 10)
+    start = datetime.datetime(2000, 1, 1)
     end = datetime.datetime.today().strftime('%Y-%m-%d')
     # end = datetime.datetime(2020, 7, 10)
     Treasury = web.DataReader(['TB1YR'], 'fred', start, end)
-    RF = float(Treasury.iloc[-1])
+    RF = float(Treasury.iloc[-1]) #debug value?
     RF = RF / 100
 
     # Beta
@@ -106,29 +106,32 @@ def calculate_cost_of_equity(ticker):
     beta = float(beta['profile']['beta'])
 
     # Market Return
-    start = datetime.datetime(2019, 7, 10)
+    '''
+    start = datetime.datetime(2000, 1, 1)
     end = datetime.datetime.today().strftime('%Y-%m-%d')
     SP500 = web.DataReader(['sp500'], 'fred', start, end)
     # Drop all Not a number values using drop method.
     SP500.dropna(inplace=True)
     SP500yearlyreturn = (SP500['sp500'].iloc[-1] / SP500['sp500'].iloc[-252]) - 1
+    '''
+
+    sp500_avg_return = 0.08
 
     #cost of equity
-    cost_of_equity = RF + (beta * (SP500yearlyreturn - RF))
-    print(cost_of_equity)
+    cost_of_equity = RF + (beta * (sp500_avg_return - RF))
     return cost_of_equity
 
 
 # return wacc
-#get tax rate & capital structure
-def calculate_WACC(cost_of_equity, cost_of_debt):
-    stock_ticker = ''
-    key = os.environ.get('API_KEY')
-
-    # Interest coverage
-    IS = requests.get(
-        f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
+def calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure):
     pass
+    #key = os.environ.get('API_KEY')
+    #stock_ticker = ticker
+
+
+    # wacc
+    #WACC = (cost_of_debt * (1 - TR) * total_Debts) + (cost_of_equity * total_Equity)
+    #return WACC
 
 
 
@@ -138,10 +141,45 @@ def calculate_WACC(cost_of_equity, cost_of_debt):
 def get_tax_rate_and_capital_structure(ticker):
     stock_ticker = ticker
     key = os.environ.get('API_KEY')
-    # Interest coverage
-    IS = requests.get(
-        f'https://financialmodelingprep.com/api/v3/income-statement/{stock_ticker}?apikey={key}').json()
-    pass
+
+    capital_structure = []
+    FR = requests.get(f'https://financialmodelingprep.com/api/v3/ratios/{stock_ticker}?apikey={key}').json()
+    TR = FR[0]['effectiveTaxRate']
+    # capital structure
+    BS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/balance-sheet-statement/{stock_ticker}?period=quarter&apikey={key}').json()
+    total_Debt = BS[0]['totalDebt'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
+    total_Equity = BS[0]['totalStockholdersEquity'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
+    capital_structure.append(total_Equity)
+    capital_structure.append(total_Debt)
+    capital_structure.append(TR)
+
+    return capital_structure
+
+
+def get_TR_and_CS(ticker):
+
+    fred_key = os.environ.get('FRED_API_KEY')
+    key = os.environ.get('API_KEY')
+
+    capital_structure = []
+
+    data = requests.get(f'https://financialmodelingprep.com/api/v3/ratios/{ticker}?apikey={key}').json()
+    TR = data[0]['effectiveTaxRate']
+
+    D_E = BS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/balance-sheet-statement/{ticker}?period=quarter&apikey={key}').json()
+
+    total_Equity = ''
+    capital_structure.append(TR)
+
+    return D_E
+    #return capital_structure
+
+
+
+
+
 
 
 # A DCF valuation for mature dividend paying companies with 10% error marginal

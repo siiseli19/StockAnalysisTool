@@ -8,9 +8,9 @@ from io import StringIO
 import pandas as pd
 import numpy as np #for pv and fv functions
 
-from functions import get_metrics
-from functions import get_cashflow_data
-from valuation import interest_coverage_and_RF, calculate_cost_of_debt, calculate_cost_of_equity
+from functions import get_metrics, get_cashflow_data
+from valuation import interest_coverage_and_RF, calculate_cost_of_debt, calculate_cost_of_equity, calculate_WACC, get_tax_rate_and_capital_structure
+from valuation import get_TR_and_CS
 
 #Function to extract stock data from yahoofinance.com
 #Takes a stocks ticker as a parameter
@@ -23,13 +23,18 @@ def extract_stock_data(ticker):
     cf_data = get_cashflow_data(ticker)
     IC_and_RF = interest_coverage_and_RF(ticker)
 
-
     interest_coverage_ratio = IC_and_RF[1]
     risk_free_rate = IC_and_RF[0]
 
     cost_of_debt = calculate_cost_of_debt(risk_free_rate, interest_coverage_ratio)
+
     cost_of_equity = calculate_cost_of_equity(ticker)
 
+    capital_structure = get_TR_and_CS(ticker)
+
+    #capital_structure = get_tax_rate_and_capital_structure(ticker)
+
+    #wacc = calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure)
 
     print(cf_data)
     print(metric_data)
@@ -38,6 +43,9 @@ def extract_stock_data(ticker):
     print(interest_coverage_ratio)
     print(cost_of_debt)
     print(cost_of_equity)
+    print(capital_structure)
+
+
 
     #increase casflows with growthfactor >> numpy npv function
     #Cost of cap => ROE >> similar companies
@@ -52,5 +60,6 @@ def extract_stock_data(ticker):
     #simple scrape for testing
     #Scrpe income statement for revenue and EPS performance analysis ??
     #scrape needed data for Graham number/financial sector valuation.
-stock = 'TGT'
+stock = 'WM'
+
 extract_stock_data(stock)
