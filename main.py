@@ -1,3 +1,4 @@
+import os
 import sys
 import requests
 import re
@@ -10,7 +11,7 @@ import numpy as np #for pv and fv functions
 
 from functions import get_metrics, get_cashflow_data
 from valuation import interest_coverage_and_RF, calculate_cost_of_debt, calculate_cost_of_equity, calculate_WACC, get_tax_rate_and_capital_structure
-from valuation import get_TR_and_CS
+
 
 #Function to extract stock data from yahoofinance.com
 #Takes a stocks ticker as a parameter
@@ -18,6 +19,7 @@ from valuation import get_TR_and_CS
 #make variables for indicators !! p/e etc..
 def extract_stock_data(ticker):
 
+    #fred_key = os.environ.get('FRED_API_KEY')
 
     metric_data = get_metrics(ticker)
     cf_data = get_cashflow_data(ticker)
@@ -30,12 +32,11 @@ def extract_stock_data(ticker):
 
     cost_of_equity = calculate_cost_of_equity(ticker)
 
-    capital_structure = get_TR_and_CS(ticker)
-
-    #capital_structure = get_tax_rate_and_capital_structure(ticker)
+    capital_structure = get_tax_rate_and_capital_structure(ticker)
 
     #wacc = calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure)
 
+    '''
     print(cf_data)
     print(metric_data)
     print('--------')
@@ -43,6 +44,8 @@ def extract_stock_data(ticker):
     print(interest_coverage_ratio)
     print(cost_of_debt)
     print(cost_of_equity)
+    '''
+
     print(capital_structure)
 
 

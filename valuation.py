@@ -7,6 +7,7 @@ from fredapi import Fred
 
 
 
+
 # from financialmodelingprep API
 # Kd = Rf + Credit Spread
 # Risk free rate we will use the interest rate offered by a 1 year US T-bill >> scrape if needed
@@ -134,42 +135,19 @@ def calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure):
 #deb/equity ratio
 #tax rate
 def get_tax_rate_and_capital_structure(ticker):
-    stock_ticker = ticker
-    key = os.environ.get('API_KEY')
 
-    capital_structure = []
-    FR = requests.get(f'https://financialmodelingprep.com/api/v3/ratios/{stock_ticker}?apikey={key}').json()
-    TR = FR[0]['effectiveTaxRate']
-    # capital structure
-    BS = requests.get(
-        f'https://financialmodelingprep.com/api/v3/balance-sheet-statement/{stock_ticker}?period=quarter&apikey={key}').json()
-    total_Debt = BS[0]['totalDebt'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
-    total_Equity = BS[0]['totalStockholdersEquity'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
-    capital_structure.append(total_Equity)
-    capital_structure.append(total_Debt)
-    capital_structure.append(TR)
+    fred_key = os.getenv('FRED_API_KEY')
 
-    return capital_structure
-
-
-def get_TR_and_CS(ticker):
-
-    fred_key = os.environ.get('FRED_API_KEY')
-    key = os.environ.get('API_KEY')
+    sp500 = web.DataReader(['SP500'], 'fred')
 
     capital_structure = []
 
-    data = requests.get(f'https://financialmodelingprep.com/api/v3/ratios/{ticker}?apikey={key}').json()
-    TR = data[0]['effectiveTaxRate']
+    return sp500
 
-    D_E = BS = requests.get(
-        f'https://financialmodelingprep.com/api/v3/balance-sheet-statement/{ticker}?period=quarter&apikey={key}').json()
 
-    total_Equity = ''
-    capital_structure.append(TR)
 
-    return D_E
-    #return capital_structure
+
+
 
 
 
