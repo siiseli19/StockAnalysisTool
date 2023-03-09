@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np #for pv and fv functions
 
 from functions import get_metrics, get_cashflow_data
-from valuation import interest_coverage_and_RF, calculate_cost_of_debt, calculate_cost_of_equity, calculate_WACC, get_tax_rate_and_capital_structure
+from valuation import interest_coverage_and_RF, calculate_cost_of_debt, calculate_cost_of_equity, calculate_WACC
 
 
 #Function to extract stock data from yahoofinance.com
@@ -32,7 +32,9 @@ def extract_stock_data(ticker):
 
     cost_of_equity = calculate_cost_of_equity(ticker)
 
-    capital_structure = get_tax_rate_and_capital_structure(ticker)
+    WACC = calculate_WACC(ticker, cost_of_equity, cost_of_debt)
+
+
 
     #wacc = calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure)
 
@@ -45,8 +47,6 @@ def extract_stock_data(ticker):
     print(cost_of_debt)
     print(cost_of_equity)
     '''
-
-    print(capital_structure)
 
 
 

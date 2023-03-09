@@ -119,40 +119,21 @@ def calculate_cost_of_equity(ticker):
 
 
 # return wacc
-def calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure):
-    pass
-    #key = os.environ.get('API_KEY')
-    #stock_ticker = ticker
+def calculate_WACC(ticker, cost_of_equity, cost_of_debt):
 
+    key = os.environ.get('API_KEY')
+    # effective tax rate
+    FR = requests.get(f'https://financialmodelingprep.com/api/v3/ratios/{ticker}?apikey={key}').json()
+    ETR = FR[0]['effectiveTaxRate']
 
+    # capital structure
+    BS = requests.get(
+        f'https://financialmodelingprep.com/api/v3/balance-sheet-statement/{ticker}?period=quarter&apikey={key}').json()
+    Debt_total = BS[0]['totalDebt'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
+    equity_total = BS[0]['totalStockholdersEquity'] / (BS[0]['totalDebt'] + BS[0]['totalStockholdersEquity'])
     # wacc
-    #WACC = (cost_of_debt * (1 - TR) * total_Debts) + (cost_of_equity * total_Equity)
-    #return WACC
-
-
-
-
-#deb/equity ratio
-#tax rate
-def get_tax_rate_and_capital_structure(ticker):
-
-    fred_key = os.getenv('FRED_API_KEY')
-
-    sp500 = web.DataReader(['SP500'], 'fred')
-
-    capital_structure = []
-
-    return sp500
-
-
-
-
-
-
-
-
-
-
+    WACC = (cost_of_debt * (1 - ETR) * Debt_total) + (cost_of_equity * equity_total)
+    return WACC
 
 
 # A DCF valuation for mature dividend paying companies with 10% error marginal
