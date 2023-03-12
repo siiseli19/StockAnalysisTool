@@ -38,7 +38,7 @@ def extract_stock_data(ticker):
 
     #wacc = calculate_WACC(ticker, cost_of_equity, cost_of_debt, capital_structure)
 
-    '''
+
     print(cf_data)
     print(metric_data)
     print('--------')
@@ -46,7 +46,9 @@ def extract_stock_data(ticker):
     print(interest_coverage_ratio)
     print(cost_of_debt)
     print(cost_of_equity)
-    '''
+    print('---------')
+    print(WACC)
+
 
 
 

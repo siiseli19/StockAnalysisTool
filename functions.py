@@ -32,11 +32,12 @@ def get_cashflow_data(ticker):
     cf_table = cf_row[-3]
     # result set
     cf_data = cf_table.select('span')
+
     cf_array = []
 
     for data in cf_data:
         data.string
-        cf_array.append(data)
+        cf_array.append(data) # TÄSSÄ VIELÄ OIKEIN !!
     #create solution for cashflows in millions and negatives!!
     str_arr = []
 
@@ -61,24 +62,16 @@ def get_cashflow_data(ticker):
         else: str = str.strip('B')
         str_arr.append(str)
         for cf in str_arr:
-            cf = float(cf)
+            #cf = float(cf)
             past_cashflows.append(cf)
 
 
-    year1 = past_cashflows[1]
-    year2 = past_cashflows[2]
-    year3 = past_cashflows[3]
-    year4 = past_cashflows[4]
-    year5 = past_cashflows[0]
+
 
     CF_array = []
-    CF_array.append(year1)
-    CF_array.append(year2)
-    CF_array.append(year3)
-    CF_array.append(year4)
-    CF_array.append(year5)
 
-    return  CF_array
+
+    return  cf_array
 
 
 def get_metrics(ticker):
