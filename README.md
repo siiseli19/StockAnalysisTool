@@ -13,3 +13,6 @@ With GN we could value also financial companies because the DCF method wont appl
 Also it is worth to consider to automate this program via cloud environment to run it weekly.
 
 
+Data provided by Financial Modeling Prep: https://financialmodelingprep.com/developer/docs/
+
+
